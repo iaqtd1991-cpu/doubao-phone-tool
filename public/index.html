@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f6f68">
+  <title>豆包家庭陪伴</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="topbar">
+      <div>
+        <p class="eyebrow">DOUBAO FAMILY</p>
+        <h1>家庭陪伴工具</h1>
+      </div>
+      <button class="icon-button" id="installBtn" aria-label="安装到桌面">
+        <span class="icon">+</span>
+      </button>
+    </section>
+
+    <section class="status-strip" id="statusStrip">本地模式可用，配置豆包 Key 后切换为 AI 回复。</section>
+
+    <nav class="tabs" aria-label="功能切换">
+      <button class="tab active" data-tab="homework">作业</button>
+      <button class="tab" data-tab="drive">车聊</button>
+      <button class="tab" data-tab="report">报告</button>
+      <button class="tab" data-tab="settings">设置</button>
+    </nav>
+
+    <section class="screen active" id="homework">
+      <div class="panel video-panel">
+        <div class="panel-head compact">
+          <div>
+            <h2>视频监督</h2>
+            <p>打开手机摄像头，截取当前画面给豆包分析作业状态。</p>
+          </div>
+          <button class="secondary small" id="cameraBtn">开视频</button>
+        </div>
+        <div class="video-box">
+          <video id="cameraVideo" playsinline muted></video>
+          <canvas id="cameraCanvas"></canvas>
+          <div class="video-placeholder" id="videoPlaceholder">摄像头未开启</div>
+        </div>
+        <div class="button-row">
+          <button class="primary" id="captureBtn">截图分析</button>
+          <button class="secondary" id="stopCameraBtn">关闭视频</button>
+        </div>
+        <div class="call-controls">
+          <button class="primary full" id="voiceTalkBtn">语音问豆包</button>
+          <label class="toggle-row">
+            <span>连续语音对话</span>
+            <input type="checkbox" id="continuousVoice">
+          </label>
+          <label class="toggle-row">
+            <span>AI 语音播报</span>
+            <input type="checkbox" id="voiceReply" checked>
+          </label>
+        </div>
+        <p class="reply" id="visionReply">手机独立联网使用时，需要通过 HTTPS 打开，浏览器才允许摄像头权限。</p>
+        <div class="chat-list compact-chat" id="videoChatList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>作业监督</h2>
+            <p>计时、拍照、记录状态，生成家长提醒话术。</p>
+          </div>
+          <strong id="timerText">00:00</strong>
+        </div>
+        <label class="field">
+          <span>今天的作业</span>
+          <textarea id="homeworkTask" rows="3" placeholder="例如：数学口算 30 题，语文阅读 2 页"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="primary" id="timerBtn">开始计时</button>
+          <label class="secondary file-btn">
+            拍照
+            <input id="photoInput" type="file" accept="image/*" capture="environment">
+          </label>
+        </div>
+        <img id="photoPreview" class="photo-preview" alt="作业照片预览">
+      </div>
+
+      <div class="panel">
+        <h2>观察记录</h2>
+        <div class="quick-grid">
+          <button data-observe="专注">专注</button>
+          <button data-observe="分心">分心</button>
+          <button data-observe="求助">求助</button>
+          <button data-observe="完成">完成</button>
+        </div>
+        <div class="log-list" id="observeList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head compact">
+          <h2>家长话术</h2>
+          <button class="primary small" id="homeworkAdviceBtn">生成</button>
+        </div>
+        <p class="reply" id="homeworkReply">先记录孩子状态，再让豆包生成温和但有效的提醒。</p>
+      </div>
+    </section>
+
+    <section class="screen" id="drive">
+      <div class="safety">开车时请优先看路。建议使用车载蓝牙语音播报，复杂操作停车后再做。</div>
+      <div class="panel">
+        <h2>开车陪聊</h2>
+        <div class="quick-grid drive-grid">
+          <button data-drive="讲一个轻松话题，30 秒内说完">轻松话题</button>
+          <button data-drive="我有点困，提醒我保持清醒">防困提醒</button>
+          <button data-drive="陪我聊聊今天的心情，回复短一点">心情陪聊</button>
+          <button data-drive="给我一个到家后和孩子聊的话题">亲子话题</button>
+        </div>
+        <label class="field">
+          <span>想聊什么</span>
+          <textarea id="driveInput" rows="3" placeholder="停车或安全时输入一句话"></textarea>
+        </label>
+        <button class="primary full" id="driveSendBtn">发送</button>
+      </div>
+      <div class="panel">
+        <h2>对话</h2>
+        <div class="chat-list" id="chatList"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="report">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>今日报告</h2>
+            <p id="reportCount">暂无记录</p>
+          </div>
+          <button class="primary small" id="reportBtn">生成</button>
+        </div>
+        <p class="reply" id="reportReply">生成后会汇总作业陪伴、驾驶陪聊和下一步建议。</p>
+      </div>
+      <div class="panel">
+        <h2>最近记录</h2>
+        <div class="log-list" id="recentList"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="settings">
+      <div class="panel">
+        <h2>设置</h2>
+        <label class="field">
+          <span>孩子昵称</span>
+          <input id="childName" placeholder="小朋友">
+        </label>
+        <label class="field">
+          <span>孩子年龄</span>
+          <input id="childAge" type="number" min="3" max="18" placeholder="8">
+        </label>
+        <label class="field">
+          <span>驾驶聊天风格</span>
+          <input id="driveStyle" placeholder="轻松但不打扰">
+        </label>
+        <button class="primary full" id="saveSettingsBtn">保存设置</button>
+      </div>
+      <div class="panel">
+        <h2>豆包连接</h2>
+        <p class="muted">手机独立联网使用时，把本工具部署到 HTTPS 服务器。服务端配置 ARK_API_KEY 后，文字和视频截图都会走豆包。</p>
+        <p class="code" id="serverInfo">正在检查服务状态...</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

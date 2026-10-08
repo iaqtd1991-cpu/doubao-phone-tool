@@ -1,0 +1,15 @@
+{
+  "name": "豆包家庭陪伴",
+  "short_name": "豆包陪伴",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f7f5",
+  "theme_color": "#1f6f68",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
