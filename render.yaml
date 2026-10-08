@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: doubao-phone-tool
+    env: node
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    envVars:
+      - key: ARK_API_KEY
+        sync: false
+      - key: ARK_MODEL
+        value: doubao-seed-2-1-pro-260628
+      - key: ARK_VISION_MODEL
+        value: doubao-seed-2-1-pro-260628

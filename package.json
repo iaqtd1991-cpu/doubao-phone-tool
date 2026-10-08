@@ -1,0 +1,13 @@
+{
+  "name": "doubao-phone-tool",
+  "version": "1.0.0",
+  "private": true,
+  "description": "手机独立联网使用的豆包家庭陪伴工具",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
